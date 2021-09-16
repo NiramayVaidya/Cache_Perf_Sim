@@ -9,7 +9,7 @@ from scipy import sparse
 parser = argparse.ArgumentParser(description='Input Matrix generator')
 parser.add_argument('--seed', type=int, default=0, help='Seed Value')
 parser.add_argument('--n', type=int, default=3, help='Matrix order(nxn)')
-parser.add_argument('--sparsity', type=int, default=0, help='Sparisty of matrix in %')
+parser.add_argument('--sparsity', type=int, default=0, help='Sparisty of matrix in %%')
 parser.add_argument('--dump', type=str, default='input_matrix.in', help='File name')
 
 
@@ -34,6 +34,23 @@ def saveMatrix(matrixA, matrixB, filename):
             #pdb.set_trace()
             f.write("\t".join(map(str, line)) + "\n")
 
+def saveSingleMatrix(matrixA, filename):
+    if os.path.exists(filename):
+        os.remove(filename)
+    else:   
+        print("New file created: ", filename)
+    f = open(filename, "w")
+    for i, matrix in enumerate([matrixA]):
+        for line in matrix:
+            f.write("\t".join(map(str, line)) + "\n")
+
+def saveVector(vectorA, filename):
+    if os.path.exists(filename):
+        os.remove(filename)
+    else:
+        print("New file created: ", filename)
+    f = open(filename, "w")
+    f.write("\t".join(map(str, vectorA)) + "\n")
 
 def saveCSRMatrix(CSR_matrix, filename):
     if os.path.exists(filename): 
@@ -75,8 +92,10 @@ def main():
         matrixB = np.asarray(matrixB)
         indicesB = np.random.choice(np.arange(matrixB.size), replace=False,
                            size=int(matrixB.size * (args.sparsity/100)))
+        # print(indicesB)
         flatB  = matrixB.flatten()
         flatB[indicesB] = 0
+        # print(flatB)
         #Reshape it back to square matrix    
         flatA = flatA.reshape(n,n)
         flatB = flatB.reshape(n,n)
@@ -88,10 +107,13 @@ def main():
         matrixB = flatB.tolist()
         csr_Amatrix = "csrA_"+args.dump
         csr_Bmatrix = "csrB_"+args.dump
-        saveCSRMatrix(matrixA_csr, csr_Amatrix)
-        saveCSRMatrix(matrixB_csr, csr_Bmatrix)
+        # saveCSRMatrix(matrixA_csr, csr_Amatrix)
+        # saveCSRMatrix(matrixB_csr, csr_Bmatrix)
         #print(matrixA)
-    saveMatrix(matrixA, matrixB, args.dump)
+    # saveMatrix(matrixA, matrixB, args.dump)
+    # saveSingleMatrix(matrixA, args.dump)
+    vectorA = matrixA[0]
+    saveVector(vectorA, args.dump)
 
 if __name__ == '__main__':
     main()
