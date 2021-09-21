@@ -1,0 +1,5 @@
+Simulator/src/tags
+bin/*.o
+traces/
+traces_other/
+results/

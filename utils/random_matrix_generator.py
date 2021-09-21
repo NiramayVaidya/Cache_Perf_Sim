@@ -9,7 +9,7 @@ from scipy import sparse
 parser = argparse.ArgumentParser(description='Input Matrix generator')
 parser.add_argument('--seed', type=int, default=0, help='Seed Value')
 parser.add_argument('--n', type=int, default=3, help='Matrix order(nxn)')
-parser.add_argument('--sparsity', type=int, default=0, help='Sparisty of matrix in %')
+parser.add_argument('--sparsity', type=int, default=0, help='Sparsity of matrix in %%')
 parser.add_argument('--dump', type=str, default='input_matrix.in', help='File name')
 
 
@@ -88,8 +88,8 @@ def main():
         matrixB = flatB.tolist()
         csr_Amatrix = "csrA_"+args.dump
         csr_Bmatrix = "csrB_"+args.dump
-        saveCSRMatrix(matrixA_csr, csr_Amatrix)
-        saveCSRMatrix(matrixB_csr, csr_Bmatrix)
+        # saveCSRMatrix(matrixA_csr, csr_Amatrix)
+        # saveCSRMatrix(matrixB_csr, csr_Bmatrix)
         #print(matrixA)
     saveMatrix(matrixA, matrixB, args.dump)
 
