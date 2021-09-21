@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import yaml, cache, argparse, logging, pprint
 import pdb
@@ -41,7 +41,8 @@ def main():
     configs = yaml.load(config_file)
     hierarchy = build_hierarchy(configs, logger)
     logger.info('Memory hierarchy built.')
-
+    for level in hierarchy.keys():
+        print(level + ' -> ', str(hierarchy[level]))
     logger.info('Loading tracefile...')
     trace_file = open(arguments['trace_file'])
     trace = trace_file.read().splitlines()
@@ -199,6 +200,12 @@ def build_hierarchy(configs, logger):
     #Cache_1 is required
     cache_1 = build_cache(configs, 'cache_1', prev_level, logger)
     hierarchy['cache_1'] = cache_1
+
+    #Setting next levels
+    hierarchy_levels = sorted(hierarchy.keys())
+    for i in range(1, len(hierarchy_levels)):
+        hierarchy[hierarchy_levels[i]].prev_level = hierarchy[hierarchy_levels[i - 1]]
+
     return hierarchy
 
 def build_cache(configs, name, next_level_cache, logger):
@@ -215,6 +222,7 @@ def build_cache(configs, name, next_level_cache, logger):
                 configs['architecture']['write_back'],
                 logger,
                 next_level_cache,
+                None,
                 configs[name]['policy'])
 
 

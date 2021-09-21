@@ -8,11 +8,12 @@ for entry in $input_file/*.out
 do
   f=$(echo "${entry##*/}");
   tracename=$(echo $f| cut  -d'.' -f 1);
-  echo $tracename	
+  echo $tracename
   filename="${tracename}_stats.out"
   echo "Running $tracename on simulator"
-  time ./cache_simulator.py -pdc ../config/config_simple_multilevel -t $entry | tee stats.txt
-  mv cache_simulator.log $filename  
+  time ./cache_simulator.py -pdc ../config/config_simple_multilevel_new -t $entry | tee stats.txt
+  # time ./cache_simulator.py -pdc ../config/config_simple_multilevel -t $entry | tee stats.txt
+  mv cache_simulator.log $input_file/$filename
 done
-cp *.out $input_file/
+# cp *.out $input_file/
 cd -
